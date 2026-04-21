@@ -17,11 +17,16 @@ Requirements:
 """
 
 import sys
+import io
 import xml.etree.ElementTree as ET
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 import os
+
+# Fix Unicode output on Windows (cp1252 console)
+if sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
 matplotlib.rcParams.update({
     "font.family": "DejaVu Sans",
@@ -181,7 +186,7 @@ def plot_combined(summary, output_dir="."):
     plt.tight_layout()
     out_path = os.path.join(output_dir, "qos_results.png")
     plt.savefig(out_path, bbox_inches="tight", dpi=150)
-    print(f"[✓] Saved combined chart → {out_path}")
+    print(f"[OK] Saved combined chart -> {out_path}")
     plt.show()
 
 
@@ -218,7 +223,7 @@ def plot_per_flow(results, output_dir="."):
     plt.tight_layout()
     out_path = os.path.join(output_dir, "per_flow_throughput.png")
     plt.savefig(out_path, bbox_inches="tight", dpi=150)
-    print(f"[✓] Saved per-flow chart → {out_path}")
+    print(f"[OK] Saved per-flow chart -> {out_path}")
     plt.show()
 
 
@@ -262,4 +267,4 @@ if __name__ == "__main__":
     plot_combined(summary, output_dir)
     plot_per_flow(results,  output_dir)
 
-    print("[✓] All graphs saved successfully.")
+    print("[OK] All graphs saved successfully.")
